@@ -1,6 +1,8 @@
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { createServerClient } from '@supabase/ssr'
+import LogoutButton from '@/components/auth/logout-button'
+import Link from 'next/link'
 
 export default async function DashboardPage() {
   const cookieStore = await cookies()
@@ -43,11 +45,15 @@ export default async function DashboardPage() {
   return (
     <div className="min-h-screen bg-gray-50 p-8">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold mb-4">
-          Welcome, {profile?.name || 'User'}!
-        </h1>
+        <div className="flex items-center justify-between mb-4">
+          <h1 className="text-3xl font-bold">
+            Welcome, {profile?.name || 'User'}!
+          </h1>
+          <LogoutButton />
+        </div>
 
-        <div className="bg-white rounded-lg shadow p-6">
+        {/* Stats Card */}
+        <div className="bg-white rounded-lg shadow p-6 mb-6">
           <h2 className="text-xl font-semibold mb-4">Your Stats</h2>
           <div className="grid grid-cols-3 gap-4">
             <div className="text-center">
@@ -65,9 +71,18 @@ export default async function DashboardPage() {
           </div>
         </div>
 
-        <div className="mt-8">
-          <p className="text-gray-600">🎉 Authentication is working! You're logged in.</p>
-          <p className="text-sm text-gray-500 mt-2">Week 1 complete. Ready for Week 2!</p>
+        {/* Challenges Section */}
+        <div className="bg-white rounded-lg shadow p-6">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-semibold">Your Challenges</h2>
+            <Link
+              href="/challenges/new"
+              className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 font-medium"
+            >
+              + Create Challenge
+            </Link>
+          </div>
+          <p className="text-gray-600">No challenges yet. Create your first one!</p>
         </div>
       </div>
     </div>
